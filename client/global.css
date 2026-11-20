@@ -1,0 +1,100 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* GOMeal Theme - Warm Food Colors */
+    --background: 42 100% 97%;       /* very light cream */
+    --foreground: 0 11% 21%;          /* dark brown #3B2F2F */
+
+    --card: 0 0% 100%;                /* white cards */
+    --card-foreground: 0 11% 21%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 11% 21%;
+
+    --primary: 15 87% 55%;            /* orange #F05A28 */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 43 91% 62%;          /* yellow #F6C445 */
+    --secondary-foreground: 0 11% 21%;
+
+    --muted: 42 60% 95%;
+    --muted-foreground: 0 11% 45%;
+
+    --accent: 88 50% 53%;             /* green #8BC34A */
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 42 30% 90%;
+    --input: 42 30% 90%;
+    --ring: 15 87% 55%;
+
+    --radius: 0.75rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+  }
+
+  :where(p, span, li, a, button, label, td, th) {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+}
+
+@layer utilities {
+  .text-gomeal-price {
+    @apply text-gomeal-orange font-bold;
+  }
+
+  .btn-primary {
+    @apply bg-gomeal-orange text-white hover:bg-gomeal-orange/90 transition-colors rounded-xl font-semibold;
+  }
+
+  .btn-secondary {
+    @apply bg-gomeal-yellow text-gomeal-brown hover:bg-gomeal-yellow/90 transition-colors rounded-xl font-semibold;
+  }
+
+  .card-food {
+    @apply bg-white rounded-2xl shadow-sm border border-gomeal-cream hover:shadow-md transition-shadow;
+  }
+}
+
+/* Bottom nav padding */
+body {
+  padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px));
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Skeleton animation */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 0.5rem;
+}
