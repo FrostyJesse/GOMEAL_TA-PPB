@@ -7,7 +7,7 @@ export const favoritesRouter = Router();
 favoritesRouter.use(authMiddleware);
 
 // GET /api/v1/favorites - Ambil daftar makanan favorit user
-favoritesRouter.get('/', async (req: AuthenticatedRequest, res) => {
+favoritesRouter.get('/', async (req: any, res: any) => {
   try {
     const userId = req.user!.sub;
 
@@ -31,7 +31,7 @@ favoritesRouter.get('/', async (req: AuthenticatedRequest, res) => {
 });
 
 // POST /api/v1/favorites - Tambah makanan ke favorit
-favoritesRouter.post('/', async (req: AuthenticatedRequest, res) => {
+favoritesRouter.post('/', async (req: any, res: any) => {
   try {
     const userId = req.user!.sub;
     const { menu_id } = req.body;
@@ -60,7 +60,7 @@ favoritesRouter.post('/', async (req: AuthenticatedRequest, res) => {
 });
 
 // DELETE /api/v1/favorites/:menuId - Hapus makanan dari favorit
-favoritesRouter.delete('/:menuId', async (req: AuthenticatedRequest, res) => {
+favoritesRouter.delete('/:menuId', async (req: any, res: any) => {
   try {
     const userId = req.user!.sub;
     const { menuId } = req.params;

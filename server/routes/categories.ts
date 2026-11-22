@@ -4,7 +4,7 @@ import { query } from '../lib/db';
 export const categoriesRouter = Router();
 
 // GET /api/v1/categories
-categoriesRouter.get('/', async (_req, res) => {
+categoriesRouter.get('/', async (_req: any, res: any) => {
   try {
     const result = await query(
       `SELECT c.id, c.name, c.description, c.image_url, c.created_at,

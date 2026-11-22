@@ -113,7 +113,7 @@ router.post('/login', async (req, res) => {
 });
 
 // GET /api/auth/me (Cek status autentikasi token)
-router.get('/me', authMiddleware, async (req: AuthenticatedRequest, res) => {
+router.get('/me', authMiddleware, async (req: any, res: any) => {
   try {
     const userId = req.user!.sub;
     const result = await query(

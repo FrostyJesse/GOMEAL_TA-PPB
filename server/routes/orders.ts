@@ -10,7 +10,7 @@ export const ordersRouter = Router();
 ordersRouter.use(authMiddleware);
 
 // GET /api/v1/orders - Riwayat pesanan milik pengguna yang login
-ordersRouter.get('/', async (req: AuthenticatedRequest, res) => {
+ordersRouter.get('/', async (req: any, res: any) => {
   try {
     const userId = req.user!.sub;
 
@@ -45,7 +45,7 @@ ordersRouter.get('/', async (req: AuthenticatedRequest, res) => {
 });
 
 // GET /api/v1/orders/:id - Detail pesanan tertentu
-ordersRouter.get('/:id', async (req: AuthenticatedRequest, res) => {
+ordersRouter.get('/:id', async (req: any, res: any) => {
   try {
     const { id } = req.params;
     const userId = req.user!.sub;
@@ -85,7 +85,7 @@ ordersRouter.get('/:id', async (req: AuthenticatedRequest, res) => {
 });
 
 // POST /api/v1/orders - Checkout pesanan baru dengan TRANSAKSI DATABASE ATOMIK
-ordersRouter.post('/', async (req: AuthenticatedRequest, res) => {
+ordersRouter.post('/', async (req: any, res: any) => {
   const client = await getClient();
   try {
     const userId = req.user!.sub;
@@ -219,7 +219,7 @@ ordersRouter.post('/', async (req: AuthenticatedRequest, res) => {
 });
 
 // PATCH /api/v1/orders/:id/cancel - Batalkan pesanan & pulihkan stok
-ordersRouter.patch('/:id/cancel', async (req: AuthenticatedRequest, res) => {
+ordersRouter.patch('/:id/cancel', async (req: any, res: any) => {
   const client = await getClient();
   try {
     const { id } = req.params;

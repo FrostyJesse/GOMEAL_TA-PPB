@@ -9,7 +9,7 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage, limits: { fileSize: 5 * 1024 * 1024 } });
 
 // GET /api/v1/menu
-menuRouter.get('/', async (req, res) => {
+menuRouter.get('/', async (req: any, res: any) => {
   try {
     const { category, search, page = 1, limit = 20, sort } = req.query;
 
@@ -86,7 +86,7 @@ menuRouter.get('/', async (req, res) => {
 });
 
 // GET /api/v1/menu/:id
-menuRouter.get('/:id', async (req, res) => {
+menuRouter.get('/:id', async (req: any, res: any) => {
   try {
     const { id } = req.params;
     const result = await query(
@@ -112,7 +112,7 @@ menuRouter.get('/:id', async (req, res) => {
 });
 
 // POST /api/v1/menu (Admin Only)
-menuRouter.post('/', authMiddleware, requireAdmin, upload.single('image'), async (req: AuthenticatedRequest, res) => {
+menuRouter.post('/', authMiddleware, requireAdmin, upload.single('image'), async (req: any, res: any) => {
   try {
     const { name, category_id, description, price, stock_quantity = 100, image_url, preparation_time = '15 menit' } = req.body;
 
@@ -135,7 +135,7 @@ menuRouter.post('/', authMiddleware, requireAdmin, upload.single('image'), async
 });
 
 // PUT /api/v1/menu/:id (Admin Only)
-menuRouter.put('/:id', authMiddleware, requireAdmin, async (req: AuthenticatedRequest, res) => {
+menuRouter.put('/:id', authMiddleware, requireAdmin, async (req: any, res: any) => {
   try {
     const { id } = req.params;
     const { name, category_id, description, price, stock_quantity, image_url, preparation_time, is_available } = req.body;
@@ -178,7 +178,7 @@ menuRouter.put('/:id', authMiddleware, requireAdmin, async (req: AuthenticatedRe
 });
 
 // DELETE /api/v1/menu/:id (Admin Only)
-menuRouter.delete('/:id', authMiddleware, requireAdmin, async (req: AuthenticatedRequest, res) => {
+menuRouter.delete('/:id', authMiddleware, requireAdmin, async (req: any, res: any) => {
   try {
     const { id } = req.params;
     const result = await query('DELETE FROM menus WHERE id = $1 RETURNING id', [id]);

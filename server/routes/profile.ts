@@ -9,7 +9,7 @@ export const profileRouter = Router();
 profileRouter.use(authMiddleware);
 
 // GET /api/v1/profile
-profileRouter.get('/', async (req: AuthenticatedRequest, res) => {
+profileRouter.get('/', async (req: any, res: any) => {
   try {
     const userId = req.user!.sub;
 
@@ -38,7 +38,7 @@ profileRouter.get('/', async (req: AuthenticatedRequest, res) => {
 });
 
 // PUT /api/v1/profile
-profileRouter.put('/', async (req: AuthenticatedRequest, res) => {
+profileRouter.put('/', async (req: any, res: any) => {
   try {
     const userId = req.user!.sub;
     const { full_name, phone, avatar_url, address } = profileSchema.parse(req.body);

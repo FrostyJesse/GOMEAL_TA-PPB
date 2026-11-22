@@ -15,7 +15,7 @@ export function createServer() {
   // Middleware Security & CORS
   app.use(
     helmet({
-      contentSecurityPolicy: false, // Menghindari isu blokir gambar dari unspash/cdn
+      contentSecurityPolicy: false, // Menghindari isu blokir gambar dari unsplash/cdn
     })
   );
   app.use(cors({ origin: true, credentials: true }));
@@ -32,7 +32,7 @@ export function createServer() {
   app.use(limiter);
 
   // Health check endpoint
-  app.get("/api/health", (_req, res) => {
+  app.get("/api/health", (_req: any, res: any) => {
     res.json({
       status: "ok",
       app: "GOMeal API",
@@ -50,12 +50,14 @@ export function createServer() {
   app.use("/api/v1/favorites", favoritesRouter);
 
   // Global Error Handler
-  app.use((err: any, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
+  app.use((err: any, _req: any, res: any, _next: any) => {
     console.error("Unhandled error:", err);
-    res.status(500).json({
-      message: "Terjadi kesalahan internal pada server",
-      error: process.env.NODE_ENV === "development" ? err.message : undefined,
-    });
+    if (res && typeof res.status === "function") {
+      res.status(500).json({
+        message: "Terjadi kesalahan internal pada server",
+        error: process.env.NODE_ENV === "development" ? err.message : undefined,
+      });
+    }
   });
 
   return app;
