@@ -3,14 +3,14 @@
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "/api/index"
+      "destination": "/api/index.js"
     },
     {
       "source": "/((?!api/|assets/|favicon|.*\\..*).*)",
       "destination": "/index.html"
     }
   ],
-  "buildCommand": "pnpm run build:client",
+  "buildCommand": "pnpm run build:client && pnpm run build:api",
   "outputDirectory": "dist/spa",
   "framework": "vite"
 }
