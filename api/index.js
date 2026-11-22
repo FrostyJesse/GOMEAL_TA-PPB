@@ -751,9 +751,6 @@ function createServer() {
   return app2;
 }
 const app = createServer();
-function handler(req, res) {
-  return app(req, res);
-}
 export {
-  handler as default
+  app as default
 };
