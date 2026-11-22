@@ -12,6 +12,9 @@ import { favoritesRouter } from "./routes/favorites";
 export function createServer() {
   const app = express();
 
+  // Trust reverse proxy (Vercel, render, cloudflare)
+  app.set("trust proxy", 1);
+
   // Middleware Security & CORS
   app.use(
     helmet({
@@ -22,12 +25,21 @@ export function createServer() {
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
 
+  // Normalisasi req.url jika diarahkan oleh Vercel rewrite
+  app.use((req: any, _res: any, next: any) => {
+    if (req.url && req.originalUrl && (req.url.startsWith('/api/index') || req.url === '/api')) {
+      req.url = req.originalUrl;
+    }
+    next();
+  });
+
   // Rate Limiter
   const limiter = rateLimit({
     windowMs: 15 * 60 * 1000,
     max: 200,
     standardHeaders: true,
     legacyHeaders: false,
+    validate: { xForwardedForHeader: false, default: false },
   });
   app.use(limiter);
 
