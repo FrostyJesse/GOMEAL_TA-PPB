@@ -1,12 +1,11 @@
-import { Link, useLocation } from "react-router-dom";
-import { Utensils, ShoppingCart, User, Heart, LogIn } from "lucide-react";
+import { Link } from "react-router-dom";
+import { ShoppingCart, Heart, LogIn } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
 
 export default function Header() {
   const { user, isAuthenticated } = useAuth();
   const { totalItems } = useCart();
-  const location = useLocation();
 
   return (
     <header className="sticky top-0 z-40 bg-[#FFF3D6]/90 backdrop-blur-md border-b border-[#F6C445]/30">
@@ -28,55 +27,6 @@ export default function Header() {
             </span>
           </div>
         </Link>
-
-        {/* Desktop Navigation Links */}
-        <nav className="hidden md:flex items-center gap-6">
-          <Link
-            to="/"
-            className={`text-sm font-semibold transition-colors ${location.pathname === "/"
-                ? "text-[#F05A28]"
-                : "text-[#3B2F2F] hover:text-[#F05A28]"
-              }`}
-          >
-            Beranda
-          </Link>
-          <Link
-            to="/menu"
-            className={`text-sm font-semibold transition-colors ${location.pathname === "/menu"
-                ? "text-[#F05A28]"
-                : "text-[#3B2F2F] hover:text-[#F05A28]"
-              }`}
-          >
-            Menu
-          </Link>
-          <Link
-            to="/orders"
-            className={`text-sm font-semibold transition-colors ${location.pathname.startsWith("/orders")
-                ? "text-[#F05A28]"
-                : "text-[#3B2F2F] hover:text-[#F05A28]"
-              }`}
-          >
-            Pesanan
-          </Link>
-          <Link
-            to="/favorites"
-            className={`text-sm font-semibold transition-colors ${location.pathname === "/favorites"
-                ? "text-[#F05A28]"
-                : "text-[#3B2F2F] hover:text-[#F05A28]"
-              }`}
-          >
-            Favorit
-          </Link>
-          <Link
-            to="/about"
-            className={`text-sm font-semibold transition-colors ${location.pathname === "/about"
-                ? "text-[#F05A28]"
-                : "text-[#3B2F2F] hover:text-[#F05A28]"
-              }`}
-          >
-            Tentang GOMeal
-          </Link>
-        </nav>
 
         {/* Header Right Actions */}
         <div className="flex items-center gap-3">
