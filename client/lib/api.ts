@@ -58,6 +58,11 @@ export const api = {
     payment_method: string;
     items: { menu_id: string; quantity: number }[];
   }) => fetchAPI<CreateOrderResponse>('/api/v1/orders', { method: 'POST', body: JSON.stringify(data) }),
+  updateOrderStatus: (id: string, status: string) =>
+    fetchAPI<{ message: string; order: Order }>(`/api/v1/orders/${id}/status`, {
+      method: 'PATCH',
+      body: JSON.stringify({ status }),
+    }),
   cancelOrder: (id: string) =>
     fetchAPI<{ message: string }>(`/api/v1/orders/${id}/cancel`, { method: 'PATCH' }),
 

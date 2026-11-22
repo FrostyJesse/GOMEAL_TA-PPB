@@ -61,6 +61,25 @@ export default function OrderDetail() {
     },
   });
 
+  const updateStatusMutation = useMutation({
+    mutationFn: (newStatus: string) => api.updateOrderStatus(id!, newStatus),
+    onSuccess: (res) => {
+      queryClient.invalidateQueries({ queryKey: ["order-detail", id] });
+      queryClient.invalidateQueries({ queryKey: ["user-orders"] });
+      toast({
+        title: "Status Diperbarui",
+        description: res.message || "Status pesanan berhasil diperbarui.",
+      });
+    },
+    onError: (err: any) => {
+      toast({
+        title: "Gagal Mengubah Status",
+        description: err.message || "Terjadi kesalahan saat memperbarui status.",
+        variant: "destructive",
+      });
+    },
+  });
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-[#FFF3D6]/30">
@@ -199,6 +218,40 @@ export default function OrderDetail() {
               </div>
             </div>
           )}
+
+          {/* Admin / Demo Quick Status Controller */}
+          <div className="pt-4 border-t border-[#FFF3D6] space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-[#F05A28] flex items-center gap-1">
+                <RotateCcw className="w-3.5 h-3.5" />
+                Ubah Status Pesanan (Mode Demo / Admin)
+              </span>
+              <span className="text-[10px] text-[#3B2F2F]/60">Klik untuk simulasi alur</span>
+            </div>
+            <div className="flex flex-wrap gap-1.5">
+              {[
+                { value: "menunggu_konfirmasi", label: "1. Dikonfirmasi" },
+                { value: "diproses", label: "2. Diproses" },
+                { value: "sedang_diantar", label: "3. Diantar" },
+                { value: "selesai", label: "4. Selesai" },
+                { value: "dibatalkan", label: "Dibatalkan" },
+              ].map((opt) => (
+                <button
+                  key={opt.value}
+                  type="button"
+                  disabled={updateStatusMutation.isPending || order.status === opt.value}
+                  onClick={() => updateStatusMutation.mutate(opt.value)}
+                  className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all shadow-sm ${
+                    order.status === opt.value
+                      ? "bg-[#F05A28] text-white shadow-md cursor-default ring-2 ring-[#F05A28]/30"
+                      : "bg-[#FFF3D6] text-[#3B2F2F] hover:bg-[#F6C445]/60 active:scale-95"
+                  } disabled:opacity-50`}
+                >
+                  {opt.label}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
 
         {/* Items List Card */}

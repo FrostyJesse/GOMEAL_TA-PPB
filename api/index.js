@@ -544,6 +544,30 @@ ordersRouter.post("/", async (req, res) => {
     client.release();
   }
 });
+ordersRouter.patch("/:id/status", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+    const validStatuses = ["menunggu_konfirmasi", "diproses", "sedang_diantar", "selesai", "dibatalkan"];
+    if (!validStatuses.includes(status)) {
+      return res.status(400).json({ message: "Status tidak valid" });
+    }
+    const result = await query(
+      "UPDATE orders SET status = $1, updated_at = NOW() WHERE id = $2 RETURNING *",
+      [status, id]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: "Pesanan tidak ditemukan" });
+    }
+    res.json({
+      message: `Status pesanan berhasil diubah menjadi ${status}`,
+      order: result.rows[0]
+    });
+  } catch (error) {
+    console.error("Update order status error:", error);
+    res.status(500).json({ message: "Gagal memperbarui status pesanan", error: error.message });
+  }
+});
 ordersRouter.patch("/:id/cancel", async (req, res) => {
   const client = await getClient();
   try {
