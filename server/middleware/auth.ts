@@ -13,11 +13,18 @@ export interface AuthenticatedUser {
 
 export interface AuthenticatedRequest extends Request {
   user?: AuthenticatedUser;
+  headers: any;
+  params: any;
+  body: any;
+  query: any;
+  [key: string]: any;
 }
 
-export const authMiddleware = (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
-  const authHeader = req.headers.authorization;
-  const token = authHeader?.startsWith('Bearer ') ? authHeader.split(' ')[1] : null;
+export const authMiddleware = (req: any, res: any, next: any) => {
+  const authHeader = req.headers?.authorization;
+  const token = typeof authHeader === 'string' && authHeader.startsWith('Bearer ')
+    ? authHeader.split(' ')[1]
+    : null;
 
   if (!token) {
     return res.status(401).json({ message: 'Token otentikasi tidak ditemukan. Silakan login terlebih dahulu.' });
@@ -26,15 +33,15 @@ export const authMiddleware = (req: AuthenticatedRequest, res: Response, next: N
   try {
     const decoded = jwt.verify(token, JWT_SECRET) as AuthenticatedUser;
     req.user = decoded;
-    next();
+    if (typeof next === 'function') next();
   } catch (error) {
     return res.status(401).json({ message: 'Sesi login telah kedaluwarsa atau token tidak valid.' });
   }
 };
 
-export const requireAdmin = (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+export const requireAdmin = (req: any, res: any, next: any) => {
   if (!req.user || req.user.role !== 'admin') {
     return res.status(403).json({ message: 'Akses ditolak. Tindakan ini memerlukan hak akses Admin.' });
   }
-  next();
+  if (typeof next === 'function') next();
 };

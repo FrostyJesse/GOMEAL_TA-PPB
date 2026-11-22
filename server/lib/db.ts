@@ -31,11 +31,16 @@ export function getPool(): pg.Pool {
   return poolInstance;
 }
 
-export const pool = {
-  query: (text: string, params?: any[]) => getPool().query(text, params),
-  connect: () => getPool().connect(),
-  on: (event: string, listener: (...args: any[]) => void) => getPool().on(event, listener),
-} as unknown as pg.Pool;
+export const pool = new Proxy({} as pg.Pool, {
+  get(_target, prop) {
+    const p = getPool();
+    const val = (p as any)[prop];
+    if (typeof val === 'function') {
+      return val.bind(p);
+    }
+    return val;
+  },
+});
 
 /** Helper: execute parameterized query */
 export async function query(text: string, params?: any[]) {
