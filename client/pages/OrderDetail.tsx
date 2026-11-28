@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
@@ -10,7 +10,6 @@ import {
   CheckCircle2,
   XCircle,
   Truck,
-  RotateCcw,
   Loader2,
   AlertTriangle,
 } from "lucide-react";
@@ -79,6 +78,25 @@ export default function OrderDetail() {
       });
     },
   });
+
+  useEffect(() => {
+    if (!order || isCancelling || cancelMutation.isPending) return;
+
+    const nextStatusMap: Partial<Record<OrderStatus, OrderStatus>> = {
+      menunggu_konfirmasi: "diproses",
+      diproses: "sedang_diantar",
+      sedang_diantar: "selesai",
+    };
+
+    const nextStatus = nextStatusMap[order.status];
+    if (!nextStatus) return;
+
+    const timer = setTimeout(() => {
+      updateStatusMutation.mutate(nextStatus);
+    }, 10000);
+
+    return () => clearTimeout(timer);
+  }, [order?.id, order?.status, isCancelling, cancelMutation.isPending]);
 
   if (isLoading) {
     return (
@@ -218,40 +236,6 @@ export default function OrderDetail() {
               </div>
             </div>
           )}
-
-          {/* Admin / Demo Quick Status Controller */}
-          <div className="pt-4 border-t border-[#FFF3D6] space-y-2">
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-[#F05A28] flex items-center gap-1">
-                <RotateCcw className="w-3.5 h-3.5" />
-                Ubah Status Pesanan (Mode Demo / Admin)
-              </span>
-              <span className="text-[10px] text-[#3B2F2F]/60">Klik untuk simulasi alur</span>
-            </div>
-            <div className="flex flex-wrap gap-1.5">
-              {[
-                { value: "menunggu_konfirmasi", label: "1. Dikonfirmasi" },
-                { value: "diproses", label: "2. Diproses" },
-                { value: "sedang_diantar", label: "3. Diantar" },
-                { value: "selesai", label: "4. Selesai" },
-                { value: "dibatalkan", label: "Dibatalkan" },
-              ].map((opt) => (
-                <button
-                  key={opt.value}
-                  type="button"
-                  disabled={updateStatusMutation.isPending || order.status === opt.value}
-                  onClick={() => updateStatusMutation.mutate(opt.value)}
-                  className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all shadow-sm ${
-                    order.status === opt.value
-                      ? "bg-[#F05A28] text-white shadow-md cursor-default ring-2 ring-[#F05A28]/30"
-                      : "bg-[#FFF3D6] text-[#3B2F2F] hover:bg-[#F6C445]/60 active:scale-95"
-                  } disabled:opacity-50`}
-                >
-                  {opt.label}
-                </button>
-              ))}
-            </div>
-          </div>
         </div>
 
         {/* Items List Card */}
