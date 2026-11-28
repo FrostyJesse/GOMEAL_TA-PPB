@@ -1,8 +1,27 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Sparkles, CheckCircle2, Clock, ShieldCheck, ArrowRight, UtensilsCrossed } from "lucide-react";
+import {
+  ArrowLeft,
+  Sparkles,
+  CheckCircle2,
+  Clock,
+  ShieldCheck,
+  ArrowRight,
+  UtensilsCrossed,
+  GraduationCap,
+} from "lucide-react";
 import Header from "@/components/Header";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 export default function About() {
+  const [isInfoOpen, setIsInfoOpen] = useState(false);
+
   return (
     <div className="min-h-screen bg-[#FFF3D6]/30 pb-24">
       <Header />
@@ -29,6 +48,16 @@ export default function About() {
           <p className="text-xs sm:text-sm text-[#3B2F2F]/85 max-w-lg mx-auto leading-relaxed pt-2">
             GOMeal adalah aplikasi pemesanan makanan modern yang dirancang untuk memberikan pengalaman memesan hidangan favorit secara praktis, nyaman, dan menyenangkan langsung dari genggaman Anda.
           </p>
+          <div className="pt-2">
+            <button
+              type="button"
+              onClick={() => setIsInfoOpen(true)}
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-white/95 hover:bg-white text-[#F05A28] font-heading font-bold text-xs sm:text-sm rounded-2xl shadow-md hover:scale-105 active:scale-95 transition-all"
+            >
+              <GraduationCap className="w-4 h-4" />
+              <span>Info Tugas Akhir & NIM</span>
+            </button>
+          </div>
         </div>
 
         {/* Cerita & Komitmen Kami */}
@@ -126,6 +155,53 @@ export default function About() {
           </Link>
         </div>
       </main>
+
+      {/* Dialog Informasi NIM & Judul Tugas Akhir */}
+      <Dialog open={isInfoOpen} onOpenChange={setIsInfoOpen}>
+        <DialogContent className="sm:max-w-md rounded-3xl border-[#FFF3D6] bg-white">
+          <DialogHeader>
+            <div className="w-12 h-12 rounded-2xl bg-[#FFF3D6] text-[#F05A28] flex items-center justify-center mb-2">
+              <GraduationCap className="w-6 h-6" />
+            </div>
+            <DialogTitle className="font-heading font-extrabold text-xl text-[#3B2F2F]">
+              Informasi Tugas Akhir
+            </DialogTitle>
+            <DialogDescription className="text-xs text-[#3B2F2F]/70">
+              Detail identitas mahasiswa dan judul proyek aplikasi GOMeal.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-3 py-2 text-xs sm:text-sm">
+            <div className="p-3.5 rounded-2xl bg-[#FFF3D6]/50 border border-[#FFF3D6]">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-[#F05A28] block">
+                NIM Mahasiswa
+              </span>
+              <span className="font-mono font-bold text-[#3B2F2F] text-sm">
+                [Isi NIM Anda]
+              </span>
+            </div>
+
+            <div className="p-3.5 rounded-2xl bg-[#FFF3D6]/50 border border-[#FFF3D6]">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-[#F05A28] block">
+                Judul Tugas Akhir
+              </span>
+              <span className="font-bold text-[#3B2F2F]">
+                Aplikasi Pemesanan Makanan Online GOMeal ("Good Food, Good Mood!") Berbasis Mobile-First Web & REST API
+              </span>
+            </div>
+          </div>
+
+          <div className="flex justify-end pt-2">
+            <button
+              type="button"
+              onClick={() => setIsInfoOpen(false)}
+              className="px-5 py-2.5 bg-[#F05A28] hover:bg-[#F05A28]/90 text-white font-bold text-xs rounded-xl transition-all"
+            >
+              Tutup
+            </button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
