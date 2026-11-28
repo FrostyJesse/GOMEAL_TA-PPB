@@ -177,7 +177,7 @@ export default function About() {
                 NIM Mahasiswa
               </span>
               <span className="font-mono font-bold text-[#3B2F2F] text-sm">
-                [Isi NIM Anda]
+                [21120124120041]
               </span>
             </div>
 
